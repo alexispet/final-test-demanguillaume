@@ -1,12 +1,17 @@
 name: build app
+
 run-name: ${{ github.actor }} building app.
+
 on: [push]
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   SSH_HOST: ${{ secrets.SSH_HOST }}
+
 jobs:
  test-app:
+    environment: development
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -15,17 +20,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       
-      - name: Install dependencies
-        run: npm install
-      
-      - name: Run docker Compose
-        run: docker compose -f docker-compose.dev.yml up -d --build
-    
-      - name: Run test app in docker
-        run: docker compose exec nodejs npm run test
-
-      - name: Stop docker Compose
-        run: docker compose -f docker-compose.dev.yml down
+      - name: Run docker compose file & tests
+        uses: adambirds/docker-compose-action@v1.3.0
+        with:
+          compose-file: "docker-compose.dev.yml"
+          down-flags: "--volumes"
+          services: |
+            nodesjs
+            mariadb
+          test-container: nodesjs
+          test-command: "npm run test"
+      - env: 
+          MYSQL_RANDOM_ROOT_PASSWORD: ${{ secrets.MYSQL_RANDOM_ROOT_PASSWORD }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_USER: ${{ secrets.DB_USER }}
 
  build-docker:
     runs-on: ubuntu-latest

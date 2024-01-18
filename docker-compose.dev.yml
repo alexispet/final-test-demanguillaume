@@ -1,24 +1,4 @@
-version: '3.8'
-
 services:
-  mariadb:
-    image: mariadb:11.2
-    restart: "no"
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./docker/mariadb/data:/var/lib/mariadb
-    healthcheck:
-      test: "/usr/bin/mysql --user=${DB_USER} --password=${DB_PASSWORD} --execute \"SHOW DATABASES;\""
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
   nodejs:
     build:
       context: .
@@ -41,6 +21,24 @@ services:
     depends_on:
       - mariadb
     command: ["npm", "run", "dev"]
+    
+  mariadb:
+    image: mariadb:11.2
+    restart: "no"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/mariadb/data:/var/lib/mariadb
+    healthcheck:
+      test: "/usr/bin/mysql --user=${DB_USER} --password=${DB_PASSWORD} --execute \"SHOW DATABASES;\""
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   adminer:
     image: adminer:latest

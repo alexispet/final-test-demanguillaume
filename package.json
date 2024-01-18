@@ -7,9 +7,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "test": "mocha tests/**/*.test.js --exit",
-    "db:import": "node database/init-db.js",
-    "docker:dev": "npm install",
-    "docker:prod": "npm ci --only=production"
+    "db:import": "node database/init-db.js"
   },
   "type": "module",
   "author": "",
