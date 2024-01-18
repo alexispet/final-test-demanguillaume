@@ -26,9 +26,9 @@ jobs:
           compose-file: "docker-compose.dev.yml"
           down-flags: "--volumes"
           services: |
-            nodesjs
-            mariadb
-          test-container: nodesjs
+            "nodesjs"
+            "mariadb"
+          test-container: "nodesjs"
           test-command: "npm run test"
         env: 
           MYSQL_RANDOM_ROOT_PASSWORD: ${{ secrets.MYSQL_RANDOM_ROOT_PASSWORD }}
