@@ -1,0 +1,107 @@
+name: build app
+run-name: ${{ github.actor }} building app.
+on: [push]
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  SSH_HOST: ${{ secrets.SSH_HOST }}
+jobs:
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '18'
+  #     - uses: actions/cache@v3
+  #       with:
+  #         path: |
+  #           ~/.cache/Cypress
+  #           node_modules
+  #         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+  #     - run: npm install
+  #     - run: npm run build
+
+  # test:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       browser: [chrome, firefox]
+  #   steps:
+  #       - uses: actions/checkout@v4
+  #       - uses: actions/cache/restore@v3
+  #         with:
+  #           path: |
+  #             ~/.cache/Cypress
+  #             node_modules
+  #           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+  #       - name: Cypress run
+  #         uses: cypress-io/github-action@v6
+  #         with:
+  #           install: false
+  #           build: npm run build
+  #           start: npm start
+  #           browser: ${{ matrix.browser }}
+
+  #       - name: upload-cypress-video
+  #         uses: actions/upload-artifact@v4
+  #         if: always()
+  #         with:
+  #           name: Cypress videos for ${{ matrix.browser }}
+  #           path: cypress/videos
+
+  # deploy:
+  #   needs: [build]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: webfactory/ssh-agent@v0.8.0
+  #       with:
+  #         ssh-private-key: ${{ secrets.SSH_KEY }}
+  #     - run: |
+  #        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+  #        cd intro-to-ci-cd-demanguillaume && \
+  #        git pull && \
+  #        npm i && \
+  #        npm run build && \
+  #        pm2 restart all"
+#
+
+# There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
+ build-docker:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/express
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+
+    
+
+   
