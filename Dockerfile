@@ -14,9 +14,13 @@ RUN npm ci --only=production
 COPY . /app
 
 # Script d'entrypoint pour l'installation des dépendances en mode dev et l'import de la base de données
-COPY docker-entrypoint.sh /app/docker-entrypoint.sh
-RUN chmod +x /app/docker-entrypoint.sh
-ENTRYPOINT ["/app/docker-entrypoint.sh"]
+COPY docker/express/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
+ENTRYPOINT [ "docker-entrypoint" ]
+# ENTRYPOINT ["/app/docker-entrypoint.sh"]
+
+# COPY docker/next/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+# RUN chmod +x /usr/local/bin/docker-entrypoint
 
 # Nouvelle étape de build pour créer une image légère
 FROM node:21.6-alpine3.18

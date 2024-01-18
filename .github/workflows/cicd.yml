@@ -19,10 +19,13 @@ jobs:
         run: npm install
       
       - name: Run docker Compose
-        run: docker-compose -f docker-compose.dev.yml up -d --build
+        run: docker compose -f docker-compose.dev.yml up -d --build
     
       - name: Run test app in docker
-        run: docker-compose exec nodejs npm run test
+        run: docker compose exec nodejs npm run test
+
+      - name: Stop docker Compose
+        run: docker compose -f docker-compose.dev.yml down
 
  build-docker:
     runs-on: ubuntu-latest
