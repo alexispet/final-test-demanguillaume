@@ -1,15 +1,14 @@
 services:
   app:
-    build:
-      context: .
-      target: app
-    image: app
+    image: ghcr.io/alexispet/final-test-demanguillaume/app:main
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       DB_HOST: ${DB_HOST}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_DATABASE: ${DB_DATABASE}
+    label:
+      - "com.centurylinklabs.watchtower.enable=true"  
     ports:
       - "3000:3000"
     volumes:
@@ -35,10 +34,3 @@ services:
       timeout: 10s
       retries: 3
 
-  adminer:
-    image: adminer:latest
-    restart: always
-    ports:
-      - "8080:8080"
-    depends_on:
-      - mariadb
