@@ -30,7 +30,7 @@ jobs:
             mariadb
           test-container: nodesjs
           test-command: "npm run test"
-      - env: 
+        env: 
           MYSQL_RANDOM_ROOT_PASSWORD: ${{ secrets.MYSQL_RANDOM_ROOT_PASSWORD }}
           DB_DATABASE: ${{ secrets.DB_DATABASE }}
           DB_HOST: ${{ secrets.DB_HOST }}
