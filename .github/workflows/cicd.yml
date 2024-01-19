@@ -101,6 +101,13 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      - name: Shoutrrr
+        uses: containrrr/shoutrrr-action@v1
+        with:
+          url: ${{ secrets.NOTIF_URL }}
+          title: Deployed ${{ github.sha }} on server
+          message: See changes at ${{ github.event.compare }}.
+
   deploy-development:
     runs-on: ubuntu-latest
     needs: [dependency-audit, linter]
@@ -143,16 +150,6 @@ jobs:
           title: Deployed ${{ github.sha }} on server
           message: See changes at ${{ github.event.compare }}.
 
-  notify:
-    needs: [deploy-production, deploy-development]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Shoutrrr
-        uses: containrrr/shoutrrr-action@v1
-        with:
-          url: ${{ secrets.NOTIF_URL }}
-          title: Deployed ${{ github.sha }} on server
-          message: See changes at ${{ github.event.compare }}.
 
     
 
