@@ -1,0 +1,21 @@
+name: Lighthouse Audit
+
+on:
+  schedule:
+    - cron: '*/2 * * * *'
+
+jobs:
+  lighthouse_audit:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run Lighthouse Audit
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+            urls: |
+                ${{ env.HOST_URL }}
+            uploadArtifacts: true
+            temporaryPublicStorage: true
