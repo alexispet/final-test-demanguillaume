@@ -7,11 +7,11 @@ on:
 jobs:
   lighthouse_audit:
     runs-on: ubuntu-latest
-    environment: production
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
+        
+      - run: echo "${{ env.HOST_URL }}"
       - name: Run Lighthouse Audit
         uses: treosh/lighthouse-ci-action@v10
         with:
