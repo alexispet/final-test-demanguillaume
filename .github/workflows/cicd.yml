@@ -23,7 +23,7 @@ jobs:
       - name: Run docker compose file & tests
         uses: adambirds/docker-compose-action@v1.3.0
         with:
-          compose-file: "docker-compose.dev.yml"
+          compose-file: "docker-compose.yml"
           down-flags: "--volumes"
           services: |
             app
