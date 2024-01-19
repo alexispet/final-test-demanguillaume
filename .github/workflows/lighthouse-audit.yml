@@ -2,7 +2,7 @@ name: Lighthouse Audit
 
 on:
   schedule:
-    - cron: '* * * * *'
+    - cron: '0 16 * * *'
 
 jobs:
   lighthouse_audit:
