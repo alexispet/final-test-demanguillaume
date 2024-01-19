@@ -16,6 +16,8 @@ services:
       - .:/app
     depends_on:
       - mariadb
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"    
     command: ["npm", "run", "start"]
 
   mariadb:
