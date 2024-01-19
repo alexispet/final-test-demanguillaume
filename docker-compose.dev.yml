@@ -1,9 +1,6 @@
 services:
   app:
-    build:
-      context: .
-      target: app
-    image: app
+    image: ghcr.io/alexispet/final-test-demanguillaume/app:develop
     environment:
       NODE_ENV: development
       DB_HOST: ${DB_HOST}
@@ -12,8 +9,6 @@ services:
       DB_DATABASE: ${DB_DATABASE}
     ports:
       - "3000:3000"
-    volumes:
-      - .:/app
     depends_on:
       - mariadb
     labels:
@@ -37,10 +32,3 @@ services:
       timeout: 10s
       retries: 3
 
-  adminer:
-    image: adminer:latest
-    restart: always
-    ports:
-      - "8080:8080"
-    depends_on:
-      - mariadb
