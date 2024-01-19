@@ -1,8 +1,10 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/OlYrOqbl)
 # Y Social network API
 
-Production URL: __________  
-Development URL: __________
+Guillaume DEMAN
+
+Production URL: ec2-54-145-165-17.compute-1.amazonaws.com:80 
+Development URL: ec2-54-145-165-17.compute-1.amazonaws.com3000
 
 ## Description
 This is the official API for the Y Social Network. 

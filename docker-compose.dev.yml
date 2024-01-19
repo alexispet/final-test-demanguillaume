@@ -9,10 +9,16 @@ services:
       DB_DATABASE: ${DB_DATABASE}
     ports:
       - "3000:3000"
+    networks:
+      - frontend
+      - dev
     depends_on:
       - mariadb
     labels:
       - "com.centurylinklabs.watchtower.enable=true"    
+      - "traefik.enable=true"
+      - "traefik.http.routers.next-prod.rule=Host(`ec2-54-145-165-17.compute-1.amazonaws.com`)"
+      - "traefik.http.routers.next-prod.entrypoints=websecure"
     command: ["npm", "run", "start"]
 
   mariadb:
@@ -22,13 +28,23 @@ services:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "3307:3306"
+    networks:
+      - dev
+    # ports:
+    #   - "3307:3306"
     volumes:
       - ./docker/mariadb/data:/var/lib/mariadb
     healthcheck:
-      test: "/usr/bin/mysql --user=${DB_USER} --password=${DB_PASSWORD} --execute \"SHOW DATABASES;\""
-      interval: 30s
+      test: '/usr/bin/mariadb --user=${DB_USER} --password=${DB_PASSWORD} --execute "SHOW DATABASES;"'
+      interval: 20s
       timeout: 10s
       retries: 3
+      start_period: 10s
+      start_interval: 5s
+
+networks:
+  frontend:
+    external: true
+    name: custom_frontend
+  dev:
 
