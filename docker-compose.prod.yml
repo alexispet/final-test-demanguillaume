@@ -9,12 +9,14 @@ services:
       DB_DATABASE: ${DB_DATABASE}
     labels:
       - "com.centurylinklabs.watchtower.enable=true"  
-      - "traefik.enable=true"
-      - "traefik.http.routers.next-prod.rule=Host(`guillaume.alpex.ovh`)"
-      - "traefik.http.routers.next-prod.entrypoints=websecure"
+      # - "traefik.enable=true"
+      # - "traefik.http.routers.next-prod.rule=Host(`guillaume.alpex.ovh`)"
+      # - "traefik.http.routers.next-prod.entrypoints=websecure"
     networks:
       - frontend
       - prod
+    # port:
+    #   - "80:3000"
     depends_on:
       - mariadb
     command: ["npm", "run", "start"]
